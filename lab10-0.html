@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<title>Lab 10-0</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-black.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css">
+
+<style>
+  p
+  {
+    font-size: 17px;
+  }
+</style>
+<body>
+
+
+<!-- Header -->
+<header class="w3-container w3-theme w3-padding" id="myHeader">
+  <i onclick="w3_open()" class="fa fa-bars w3-xlarge w3-button w3-theme"></i> 
+  <div class="w3-center">
+  <h4>Lab 10-0</h4>
+  <h1 class="w3-xxxlarge w3-animate-bottom">Visual Studio 環境建置</h1>
+  </div>
+</header>
+
+
+
+
+<!-- COLORS
+<div class="w3-row">
+  <div class="w3-col w3-container m2 w3-red"><p>Red</p></div>
+  <div class="w3-col w3-container m2 w3-blue"><p>Blue</p></div>
+  <div class="w3-col w3-container m2 w3-blue-grey"><p>Blue Grey</p></div>
+  <div class="w3-col w3-container m2 w3-teal"><p>Teal</p></div>
+  <div class="w3-col w3-container m2 w3-yellow"><p>Yellow</p></div>
+  <div class="w3-col w3-container m2 w3-orange"><p>Orange</p></div>
+</div>
+-->
+
+
+<div class="w3-row w3-border">
+    <p>目前微軟推出的最新版本是Visual Studio 2019（2019年4月發佈），電腦教室安裝的是2017，所以我們將以2017為主。請至<a href="https://visualstudio.microsoft.com/zh-hant/vs/">Visual Studio官網</a>下載Community版本。<br>
+            如果你的電腦已經有2017或是更早以前的版本則可以跳過這個步驟。  </p>
+            
+            <h3 id="toc_1">安裝Visual Studio</h3>
+            
+            <p>啟動安裝程式後，勾選「C++桌面開發」，接著點擊右下角安裝。安裝整個C++套件約需要6.5GB的硬碟空間，請留意硬碟空間是否足夠。<br>
+            <img src="img/VS-P1.png" alt="Fig1" width="60%" height="60%"><br>
+            <p>安裝過程約需要10~15分鐘。完成後Visual Studio就會啟動。</p><br>
+            <img src="img/VS-P2.png" alt="Fig2"><br>
+            Community版本需要一個有效的Microsoft帳號用來授權，如果沒有請註冊一個（沒有登入的會在30天試用期結束後而無法使用）。  </p>
+            <br><br>
+            <h3 id="toc_2">撰寫一個C++程式</h3>
+            
+            <p>Step1. 在Visual Studio中是以專案為單位，所以我們必須先建議一個C++專案。你可以在歡迎介面直接新增，或是由選單選擇「檔案&gt;新增&gt;新增專案」<br>
+            <img src="img/VS-P3.png" alt="Fig3" width="60%" height="60%"><br><br>
+            <img src="img/VS-P4.png" alt="Fig4" width="60%" height="60%"><br><br>
+            接著選擇Visual C++的空白專案，如果在這個畫面沒看到Visual C++，那表示C++開發套件未正確安裝。<br>
+            為方案建立資料夾先取消勾選。<br>
+            <img src="img/VS-P5.png" alt="Fig5"></p>
+            
+            <p>如果你沒有勾選, 建立出來的資料匣階層及主要檔案包括  </p>
+            
+            <div><pre><code class="language-none">HelloWorld\  
+                HelloWorld.sln  
+                HelloWorld.vcxproj    
+                main.cpp                 後續你自己在 IDE 環境中 加進去的程式檔案  
+                data.txt                 你的程式在 IDE 環境中測試時資料檔案需要放在這裡  
+                其它  
+                Debug\  
+                    main.obj             編譯器產生的目的程式檔案  
+                    HelloWorld.exe       連結器產生的執行檔案  
+                    其它  
+                ipch\  
+                    其它</code></pre></div>
+            
+            <p>如果你有勾選「為方案建立目錄」, 建立出來的資料匣階層及主要檔案包括  </p>
+            
+            <div><pre><code class="language-none">HelloWorld\  
+                HelloWorld.sln  
+                HelloWorld.vcxproj   
+                其它  
+                HelloWorld\  
+                    main.cpp             後續你自己在 IDE 環境中 加進去的程式檔案  
+                    data.txt             這個專案的程式在 IDE 環境中測試時資料檔案需要放在這裡  
+                    其它  
+                    Debug\  
+                        main.obj         編譯器產生的目的程式檔案  
+                其它專案\  
+                Debug\  
+                    HelloWorld.exe       連結器產生的執行檔案  
+                    其它  
+                ipch\  
+                    其它  </code></pre></div>
+            
+            <p>看到 Visual Studio 幫你建立的目錄了嗎? 在 HelloWorld\ 目錄下還有一層 HelloWorld\, Visual Studio 為什麼要這樣子做呢? 其實第一層的 HelloWorld\ 資料匣包含了「HelloWorld 方案 (solution)」所有的檔案, 第二層的 HelloWorld\HelloWorld\ 資料匣包含了「HelloWorld 專案 (project)」所有的檔案, Visual Studio 中一個「方案」可以包含多個「專案」, 每一個專案你可以選擇使用 C, C++, VB, C#, F#, html 為主要語言, 所以各自的程式檔案和資料檔案都放在自己的資料匣中, 此例中是 HelloWorld\HelloWorld\, 每一個專案可以產出 xxx.exe, xxx.lib 或是 xxx.dll 等等, 這些檔案都統一放在 HelloWorld\Debug 資料匣中。  </p>
+            
+            <p>Step 2.建立專案後，必須加入C++程式碼，由右側的方案總管選擇專案，右鍵之後依序選擇「加入&gt;新增項目」，選擇.cpp檔案並輸入檔名，按確定即可加入。<br>
+            <img src="img/VS-P6.png" alt="Fig6"><br><br>
+            <img src="img/VS-P7.png" alt="Fig7"><br>  </p>
+            
+            <p>Step 3.開始撰寫程式<br>
+            <img src="img/VS-P7-2.png" alt="Fig7-2">  </p>
+            
+            <p>Step 4.撰寫完成之後，由上方選單選取「建置&gt;建置方案」，將程式碼翻譯為 CPU 以執行的機器語言 (快速鍵: Ctrl+Shift+B）<br>
+            <img src="img/VS-P8.png" alt="Fig8">  </p>
+            
+            <p>看到輸出顯示建置成功就表示程式碼沒有問題。<br>
+            <img src="img/VS-P9.png" alt="Fig9"></p>
+            
+            <p>Step 5.執行測試<br>
+            由選單「偵錯&gt;開始偵錯」或是「偵錯&gt;啟動但不偵錯」，即可執行程式。<br>
+            <img src="img/VS-P9-2.png" alt="Fig9">  </p>
+            
+            <p>常見問題：<br>
+            Q:我在程式裡面用scanf，但是編譯階段顯示C4996錯誤，該如何解決？<br>
+            <img src="img/VS-P10.png" alt="Fig10"><br>
+            A:因為傳統的scanf或是gets都無法控制輸入的長度，容易有Buffer Overflow的安全漏洞，所以不建議使用。如果你不想看到這個訊息，除了使用fgets()之外，你可以在程式碼的第一行加上：  </p>
+            
+            <div><pre><code class="language-none">#define _CRT_SECURE_NO_WARNINGS  </code></pre></div>
+            
+            <p>這個錯誤就會被忽略了。  </p>
+            
+            <p>Q:執行時候小黑窗都一閃即逝，來不及看到結果...<br>
+            A:可以在最後的return 0;該行加上中斷點，這樣程式執行到該行就會停下來了。<br>
+            <img src="img/VS-P11.png" alt="Fig11"></p>
+            
+            <p>Reference:<br>
+            <a href="http://squall.cs.ntou.edu.tw/cprog/materials/vs2010/index.html">丁培毅-C++物件導向程式設計實習</a></p>
+            
+            
+</div>
+    
+<br>
+<!-- Footer -->
+<footer class="w3-container w3-theme-dark w3-padding-16">
+  <p>2019 Spring, Introduction to Programming</p>
+  <p>Website made by <a href="https://www.facebook.com/nick.chen.14811" target="_blank">Yu-Hsuan Chen</a></p>
+  <p>Powered by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank">w3.css</a></p>
+  <div style="position:relative;bottom:55px;" class="w3-tooltip w3-right">
+    <span class="w3-text w3-theme-light w3-padding">Go To Top</span>    
+    <a class="w3-text-white" href="#myHeader"><span class="w3-xlarge">
+    <i class="fa fa-chevron-circle-up"></i></span></a>
+  </div>
+</footer>
+
+<!-- Script for Sidebar, Tabs, Accordions, Progress bars and slideshows -->
+<script>
+function w3_open() {
+  window.location = 'home.html';
+}
+
+// Tabs
+function open(evt, cityName) {
+  var i;
+  var x = document.getElementsByClassName("city");
+  for (i = 0; i < x.length; i++) {
+    x[i].style.display = "none";
+  }
+  var activebtn = document.getElementsByClassName("testbtn");
+  for (i = 0; i < x.length; i++) {
+    activebtn[i].className = activebtn[i].className.replace(" w3-dark-grey", "");
+  }
+  document.getElementById(cityName).style.display = "block";
+  evt.currentTarget.className += " w3-dark-grey";
+}
+
+
+
+
+</script>
+
+</body>
+</html>
