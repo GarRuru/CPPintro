@@ -1,11 +1,20 @@
 <!DOCTYPE html>
 <html>
-<title>NTOUCSE 1072 程式設計二 實習網站</title>
+<title>實習程式上繳規範</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-black.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css">
+<style>
+    p
+    {
+      font-size: 17px;
+    }
+  </style>
+  
+
+
 <body>
 
 
@@ -13,8 +22,8 @@
 <header class="w3-container w3-theme w3-padding" id="myHeader">
   <i onclick="w3_open()" class="fa fa-bars w3-xlarge w3-button w3-theme"></i> 
   <div class="w3-center">
-  <h4>NTOU CSE</h4>
-  <h1 class="w3-xxxlarge w3-animate-bottom">1072 程式設計二 實習網站</h1>
+  <!--<h4>輸入日期</h4>-->
+  <h1 class="w3-xxxlarge w3-animate-bottom">實習作業上繳規範</h1>
   </div>
 </header>
 
@@ -32,29 +41,22 @@
 </div>
 -->
 
-
-<hr>
-<div class="w3-border">
-<div class="w3-bar w3-theme">
-  <button class="w3-bar-item w3-button testbtn w3-padding-16" onclick="openCity(event,'Ready')">環境準備</button>
-  <button class="w3-bar-item w3-button testbtn w3-padding-16" onclick="openCity(event,'d0522')">05/22</button>
-</div>
-
-<div id="Ready" class="w3-container city w3-animate-opacity">
-  <p><a href="lab10-0.html">Visual Studio 環境建立與部署</a></p>
-  <p><a href="assignRules.html">實習作業上繳規範</a></p>
-
-</div>
-
-<div id="d0522" class="w3-container city w3-animate-opacity">
-  <p>準備中...</p>
-</div>
-
-</div>
+<div class="w3-row w3-border">
+    <h1>每一項實習除了完成之外，都必須找助教Demo</h1>  
+    <p>助教可能會刪除你的註解，並且要你講解程式碼的運作及理由，所以不要抄別人的code。</p>
+    <br>
+    <h1>繳交至Tronclass的注意事項</h1>
+    <p>1. 上繳的程式碼請打包成一份壓縮檔(.zip, .7z, .rar)，不收零散的code</p>
+    <p>2. 壓縮檔名稱請以「學號-實習題號」命名，例如「00757000-Lab10-1.zip」</p>
+    <p>3. 壓縮檔<font color="blue">只需要保留程式及專案檔（*.c, *.cpp, *.h, *.sln, *.vcproj）</font>，其他編譯階段生成的檔案（*.obj, *.exe）、precompile header（*.pch, ipch資料夾）、Visual Studio會自動重建的檔案都請刪除。<br>壓縮完成請檢查檔案大小不應該超過1MB，超過表示你有沒刪到的檔案。（Visual Studio 2017所建立的專案要特別注意隱藏資料夾.vs）</p>
+    <p>4. 這個階段請開始要求自己程式的變數命名與排版要一致</p>
+    <p>5. 如果你的程式無法順利執行，請在壓縮檔裡面附上一個report檔案，描述你碰到了什麼困難、程式為什麼不會動...</p>
+    <br>
+    <h3>最後的最後，上傳code、找助教demo程式缺一不可</h3>
+  </div>
 
 
-
-<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+<br>
 
 <!-- Footer -->
 <footer class="w3-container w3-theme-dark w3-padding-16">
@@ -70,13 +72,12 @@
 
 <!-- Script for Sidebar, Tabs, Accordions, Progress bars and slideshows -->
 <script>
-// Side navigation
 function w3_open() {
   window.location = 'home.html';
 }
 
 // Tabs
-function openCity(evt, Name) {
+function openCity(evt, cityName) {
   var i;
   var x = document.getElementsByClassName("city");
   for (i = 0; i < x.length; i++) {
@@ -86,23 +87,25 @@ function openCity(evt, Name) {
   for (i = 0; i < x.length; i++) {
     activebtn[i].className = activebtn[i].className.replace(" w3-dark-grey", "");
   }
-  document.getElementById(Name).style.display = "block";
+  document.getElementById(cityName).style.display = "block";
   evt.currentTarget.className += " w3-dark-grey";
 }
 
 var mybtn = document.getElementsByClassName("testbtn")[0];
 mybtn.click();
 
-// Accordions
-function myAccFunc(id) {
-  var x = document.getElementById(id);
-  if (x.className.indexOf("w3-show") == -1) {
-    x.className += " w3-show";
-  } else { 
-    x.className = x.className.replace(" w3-show", "");
+
+function showDivs(n) {
+  var x = document.getElementsByClassName("mySlides");
+  if (n > x.length) {slideIndex = 1}    
+  if (n < 1) {slideIndex = x.length} ;
+  for (i = 0; i < x.length; i++) {
+    x[i].style.display = "none";  
   }
+  x[slideIndex-1].style.display = "block";  
 }
 
+showDivs(1);
 
 </script>
 
