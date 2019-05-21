@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<title>Lab 10-2</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="https://fonts.googleapis.com/css?family=Noto+Sans+TC:400,700|Ubuntu+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-black.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css">
+<style>
+    p
+    {
+      font-size: 17px;
+    }
+    body
+    {
+      font-family: 'Noto Sans TC', sans-serif;
+      font-family: 'Ubuntu Mono', monospace;
+    }
+
+  </style>
+  
+
+
+<body>
+
+
+<!-- Header -->
+<header class="w3-container w3-theme w3-padding" id="myHeader">
+  <i onclick="w3_open()" class="fa fa-bars w3-xlarge w3-button w3-theme"></i> 
+  <div class="w3-center">
+  <h4>Lab 10-2</h4>
+  <h1 class="w3-xxxlarge w3-animate-bottom">assert() statement</h1>
+  </div>
+</header>
+
+
+
+
+<!-- COLORS
+<div class="w3-row">
+  <div class="w3-col w3-container m2 w3-red"><p>Red</p></div>
+  <div class="w3-col w3-container m2 w3-blue"><p>Blue</p></div>
+  <div class="w3-col w3-container m2 w3-blue-grey"><p>Blue Grey</p></div>
+  <div class="w3-col w3-container m2 w3-teal"><p>Teal</p></div>
+  <div class="w3-col w3-container m2 w3-yellow"><p>Yellow</p></div>
+  <div class="w3-col w3-container m2 w3-orange"><p>Orange</p></div>
+</div>
+-->
+
+<div class="w3-row w3-border">
+    <h3 id="toc_1">實習目標</h3>
+
+    <p>本實習接續<a href="lab10-1.html">Lab10-1</a>，在Visual Studio環境中熟悉使用assert()來驗證C/C++程式在開發過程中不斷修改或增加功能時的正確性  </p>
+    
+    <h2 id="toc_2">步驟一</h2>
+    
+    <p>請下載 AtricileAnalyzer.exe程式，這個程式需要讀取一個檔案raw1.dat，並且統計字母的出現次數，在Lab10-1中我們已經完成大部分的工作，但實際上還有很多假設與漏洞。<br>
+    請下載檔案<a href="resources/raw2.dat">raw2.dat</a>執行，你會發現一些問題：例如raw2.dat的資料好像太多了；甚至你輸入一個不存在的檔名（例如raw3.dat）都應該會讓程式出錯。現在請依照底下的步驟在程式適當的地方加入assert()敘述來確保我們在撰寫程式時的一些假設。  </p>
+    
+    <h2 id="toc_3">步驟二</h2>
+    
+    <p>在readFile()函式中有下列敘述：  </p>
+    
+    <div><pre><code class="language-none">
+    fgets(filename,30,stdin);
+    fp = fopen(filename, &quot;rt&quot;);
+    fgets(data,DATASIZE,fp);</code></pre></div>
+    
+    <p>上述的程式其實有假設存在：就是<font color="red">fgets所讀入的檔案是存在的</font>，所以程式沒有處理當檔案開啟失敗的時候該怎麼做。假設我們希望在發生錯誤時直接把程式結束，那我們可以運用assert()函式來保證這個假設是正確的。<br><br>
+    我們將程式碼改成</p>
+    
+    <div><pre><code class="language-none">
+    fgets(filename,30,stdin);
+    fp = fopen(filename, &quot;rt&quot;);
+    <font color="red">assert(fp != 0);</font>
+    fgets(data,DATASIZE,fp);</code></pre></div>
+    
+    <p>這樣就可以自動驗證這個假設。使用assert()函式必須加上#include&lt;assert.h&gt;，有關assert()的用法請參考<font color="blue"><a href="https://docs.microsoft.com/en-us/previous-versions/visualstudio/visual-studio-2010/9sb57dw4(v=vs.100)">MSDN Library</a></font>。  </p>
+    
+    <h2 id="toc_4">步驟三</h2>
+    
+    <p>正常來說你應該檢查輸入的檔案的長度是否會超過你指定的陣列大小，但是這邊已經使用了fgets()函數讀取，所以已經避開了Buffer overflow的問題。<br>
+    請試想一下如果今天是這樣的程式碼，應該加入什麼樣的敘述來預防Overflow?  </p>
+    
+    <div><pre><code class="language-none">
+    int main()
+    {
+        int data[100] = {0};
+        int dataSize,i;
+        FILE *fp = fopen(&quot;raw1.dat&quot;,&quot;rt&quot;);  //開啟raw1.dat
+        fscanf(fp, &quot;%d&quot;, dataSize);       //檔案第一行:有幾筆資料
+        for (i=0; i&lt;dataSize; i++)
+            fscanf(fp, &quot;%d&quot;, &amp;data[i]);   //讀入資料到array中
+        fp.close();
+    }</code></pre></div>
+    
+    <h2 id="toc_5">步驟四</h2>
+    
+    <p>請在程式適當的地方加入assert()敘述，保證你使用排序的時候，結果必定是由小到大（這東西不可能只用眼睛自己檢查）。<br>
+    使用qsort()應該不會有太大的問題，但是你有可能自己寫排序的function，甚至是改變原先設計的結構，所以還是用assert()來檢查。寫這個功能需要你寫一個小的function，檢查第i個元素是否小於等於第i+1個元素：</p>
+    <font color=#f4f6f7>
+    <div><pre><code class="language-none">
+    bool isVaild(const int data[], int size)
+    {
+        for(int i=0;i&lt;size-1;i++)
+            if(data[i] &gt; data[i+1])
+                return false;
+        return true;
+    }</code></pre></div></font>
+    
+    <h2 id="toc_6">步驟五</h2>
+    
+    <p>可以想想這個程式還可以檢查什麼？有什麼假設必須確認？<br>
+    最後請助教檢查之後，將完成的專案壓縮（請參考<a href="assignRules.html">繳交規範</a>），上傳至Tronclass中的Lab10-2繳交區。</p>
+    
+    <h2 id="toc_7">步驟六</h2>
+    
+    <p>assert()是給程式開發者使用的工具，當程式開發完成交給使用者的時候，不應該有這樣的敘述......  </p>
+    
+    <p>所以我要把剛才加進去很多的assert()一行行註解掉？！  </p>
+    
+    <p>只要在所有的檔案開頭加上這個敘述，就可以讓assert()敘述不作用：</p>
+    
+    <div><pre><code class="language-none">#define NDEBUG</code></pre></div>
+    
+    <p>另一種方法是用編譯器的flag控制，從選單中選取&quot;專案&gt;Lab10-2屬性&gt;組態屬性&gt;C/C++&gt;前置處理器&quot; ，在前置處理器定義的最後加入</p>
+    
+    <div><pre><code class="language-none">; NDEBUG</code></pre></div>
+    
+    <p>接著執行&quot;建置&gt;重建方案&quot;即可。（加入一次對專案中所有檔案都有效）  </p>
+    
+    
+
+<br>
+
+<p>Reference: <a href="http://squall.cs.ntou.edu.tw/cpp/102spring/lab01/Lab1-2.html">丁培毅-C++物件導向程式設計實習</a></p>
+
+<!-- Footer -->
+<footer class="w3-container w3-theme-dark w3-padding-16">
+  <p>2019 Spring, Introduction to Programming</p>
+  <p>Website made by <a href="https://www.facebook.com/nick.chen.14811" target="_blank">Yu-Hsuan Chen</a></p>
+  <p>Powered by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank">w3.css</a></p>
+  <div style="position:relative;bottom:55px;" class="w3-tooltip w3-right">
+    <span class="w3-text w3-theme-light w3-padding">Go To Top</span>    
+    <a class="w3-text-white" href="#myHeader"><span class="w3-xlarge">
+    <i class="fa fa-chevron-circle-up"></i></span></a>
+  </div>
+</footer>
+
+<!-- Script for Sidebar, Tabs, Accordions, Progress bars and slideshows -->
+<script>
+function w3_open() {
+  window.location = 'home.html';
+}
+
+// Tabs
+function openCity(evt, cityName) {
+  var i;
+  var x = document.getElementsByClassName("city");
+  for (i = 0; i < x.length; i++) {
+    x[i].style.display = "none";
+  }
+  var activebtn = document.getElementsByClassName("testbtn");
+  for (i = 0; i < x.length; i++) {
+    activebtn[i].className = activebtn[i].className.replace(" w3-dark-grey", "");
+  }
+  document.getElementById(cityName).style.display = "block";
+  evt.currentTarget.className += " w3-dark-grey";
+}
+
+var mybtn = document.getElementsByClassName("testbtn")[0];
+mybtn.click();
+
+
+function showDivs(n) {
+  var x = document.getElementsByClassName("mySlides");
+  if (n > x.length) {slideIndex = 1}    
+  if (n < 1) {slideIndex = x.length} ;
+  for (i = 0; i < x.length; i++) {
+    x[i].style.display = "none";  
+  }
+  x[slideIndex-1].style.display = "block";  
+}
+
+showDivs(1);
+
+</script>
+
+</body>
+</html>
