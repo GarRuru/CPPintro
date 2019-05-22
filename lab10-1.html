@@ -159,7 +159,8 @@
     <p>#ifndef IO_H<br>
     #define IO_H<br>
     void readFile(char*);<br>
-    void printArray(const int[]);  </p>
+    void printArray(const int[]);  <br>
+    #endif</p>
     
     <p>其中IO_H是配合檔案名稱取的，各個檔案中應該都是不一樣的。使用#ifndef, #define, #endif的前處理器指令是為了防止重複引入.h檔案。 <font color="blue"><a href="resources/ifndef.pdf">注意事項</a></font></p></li>
     <li><p>修改main.cpp內容，拿掉 void readFile(char*); 敘述，換成 #include &quot;io.h&quot; 
