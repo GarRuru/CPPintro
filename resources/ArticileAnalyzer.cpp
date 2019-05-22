@@ -73,5 +73,5 @@ void printArray(const int freq[])
 void maxfive(const int freq[])
 {
     ALP al[26];
-    //æ‰¾å‡ºäº”å€‹æœ€å¸¸è¦‹çš„å­—æ¯ 
+    //§ä¥X¤­­Ó³Ì±`¨£ªº¦r¥À 
 }
