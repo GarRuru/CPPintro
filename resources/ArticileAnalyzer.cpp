@@ -11,7 +11,7 @@ struct ALP
 void readFile(char*);
 void countAlp(const char[] ,int[]);
 void printArray(const int[]);
-void maxFive(const int[])
+void maxFive(const int[]);
 
 int main()
 {
