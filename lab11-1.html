@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html>
+<title>Lab 11-1</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="https://fonts.googleapis.com/css?family=Noto+Sans+TC:400,700|Ubuntu+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-black.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css">
+<style>
+    p
+    {
+      font-size: 17px;
+    }
+    body
+    {
+      font-family: 'Noto Sans TC', sans-serif;
+      font-family: 'Ubuntu Mono', monospace;
+    }
+
+  </style>
+  
+
+
+<body>
+
+
+<!-- Header -->
+<header class="w3-container w3-theme w3-padding" id="myHeader">
+  <i onclick="w3_open()" class="fa fa-bars w3-xlarge w3-button w3-theme"></i> 
+  <div class="w3-center">
+  <h4>Lab 11-1</h4>
+  <h1 class="w3-xxxlarge w3-animate-bottom">CLASS Declaration: Complex Number</h1>
+  </div>
+</header>
+
+
+
+
+<!-- COLORS
+<div class="w3-row">
+  <div class="w3-col w3-container m2 w3-red"><p>Red</p></div>
+  <div class="w3-col w3-container m2 w3-blue"><p>Blue</p></div>
+  <div class="w3-col w3-container m2 w3-blue-grey"><p>Blue Grey</p></div>
+  <div class="w3-col w3-container m2 w3-teal"><p>Teal</p></div>
+  <div class="w3-col w3-container m2 w3-yellow"><p>Yellow</p></div>
+  <div class="w3-col w3-container m2 w3-orange"><p>Orange</p></div>
+</div>
+-->
+
+<div class="w3-row w3-border">
+<h3 id="toc_1">實習目標</h3>
+
+<ul>
+<li>練習使用Visual Studio介面宣告類別</li>
+<li>了解C++的類別存取權限</li>
+<li>練習如何定義成員函式、如何在成員函式中存取類別資料</li>
+<li>如何簡單的撰寫與進行單元測試(Unit Test)</li>
+</ul>
+
+<h2 id="toc_2">步驟一</h2>
+
+<p>在C/C++的基本資料型態中沒有複數(Complex Number)這樣的東西，所以這個實習我們要用C++的類別來定義一個複數型態。<br>
+這個Complex型態除了要記住實數部分跟虛數部分之外，還要定義複數的運算，這樣才能完整描述整個Complex類別：<br>
+這個實習我們必須完成下面的運算：  </p>
+
+<ul>
+<li>加法 (a+bi) + (c+di) = (a+c) + (b+d)i</li>
+<li>減法 (a+bi) - (c+di) = (a-c) + (b-d)i</li>
+<li>乘法 (a+bi) * (c+di) = (ac-bd) + (ad+bc)i</li>
+<li>除法 (a+bi) / (c+di) = (ac+bd)/(c*c+d*d) + (-ad+bc)/(c*c+d*d)i</li>
+<li>高斯平面上的長度 |a+bi| = (a*a+b*b)<sup>0.5</sup></li>
+<li>判定相等</li>
+</ul>
+
+<h2 id="toc_3">步驟二</h2>
+
+<p>請建立一個空專案：&quot;檔案&gt;新增&gt;專案&quot;，<font color="red">請取消勾選「為方案建立目錄」</font>，專案命名為Lab11-1，按下確定。<br>
+在方案總管中，加入一個新項目testComplex.cpp，並且拷貝底下的程式碼：  </p>
+
+<div><pre><code class="language-none">#include&lt;cstdlib&gt;
+int main()
+{
+    system(&quot;pause&quot;);
+    return 0;
+}</code></pre></div>
+
+<p>建置&gt;建置方案(Ctrl+Shift+B)</p>
+
+<h2 id="toc_4">步驟三</h2>
+
+<p><img src="img/L11-1-P1.png" alt="ClassConsole" width="230" height="521" >   </p>
+
+<p>切換到類別檢視的窗格，右鍵新增&gt;類別，類別名稱輸入Complex，並且勾選「建立虛擬解構函式」，點擊完成。<br>
+<img src="img/L11-1-P2.png" alt="FIG2" width="354" height="434"><br><br>
+<img src="img/L11-1-P3.png" alt="FIG3" width="598" height="450"><br>
+這時你在類別檢視的窗格，應該可以看到剛剛加入新的類別Complex，在方案總管中則會看到Complex.cpp跟Complex.h，回到類別檢視，雙擊Complex來查看Compelex.h裡面的類別宣告：</p>
+
+<div><pre><code class="language-none">#pragma once
+class Complex
+{
+    public:
+        Complex(void);
+        virtual ~Complex(void);
+};</code></pre></div>
+
+<p>這是 Visual Studio自動幫你作出來的類別定義—— &quot;建構元 (constructor)&quot;與&quot;解構元 (destructor)&quot;，一個是在物件被生成時執行的函式，另一個則是物件的生命週期結束時被系統收回時執行的函式，目前沒什麼需要改的。特別注意一點，建構元與解構元定義時是 <strong>沒有回傳型態</strong> 的。<br>
+至於檔案中 #pragma once 敘述， 和我們先前介紹的 #if !defined(...)， #ifndef, #define, #endif 一樣，是為了避免重複引入 .h 定義檔 而設計的，這是所有多檔案 C/C++ 程式都需要有的定義，如果 Visual Studio不幫你做好，你也一樣要自己做，#ifndef #if #define #endif 是所有編譯器都確定可以用的，#pragma once 不是標準的前處理器指令，但是目前常用的編譯器都有支援，Visual Studio 是可以使用的，其他的編譯器請參考 <a href="https://en.wikipedia.org/wiki/Pragma_once">wiki</a>。<br>
+請在 類別檢視 中點 Complex 類別，在下面窗格中你可以看到 Visual Studio 界面幫你定義的兩個成員函式，所有的函式定義 (definition) 都應該在 .cpp 檔案中，請點選任何一個函式打開 Complex.cpp 來檢視這兩個函式的定義。</p>
+
+<p>注意: 先前你運用 Visual Studio 寫C程式的時候，主要在 <font color="blue">方案總管</font> 窗格中檢視所有的檔案，不太需要用到 <font color="blue">類別檢視</font>窗格，但是你在寫C++程式時，如果不使用類別檢視的話，你會花費很多很多的時間在許多檔案裡尋找你自己寫的程式碼。  </p>
+
+<h2 id="toc_5">步驟四</h2>
+
+<p>現在我們該來定義Complex類別內的資料儲存欄位（資料成員）了，我們知道複數平面上的每個點都有兩個座標，請務必為他們取適當的名字，我們把它命名為m<em>real跟m</em>imaginary。至於這兩個變數該是private或是public呢？答案很簡單，就是private，類別裡的資料通常只有一小小部分是public，其他的幾乎都是private。所以如果一個類別資料必須是public的話，你應該要有充分的理由。  </p>
+
+<p>現在你有兩種做法可以加入這兩個資料成員(data member)：  </p>
+
+<ol>
+<li><p>直接編輯Complex.h檔案，在class定義裡加入private: 以及兩個資料成員的宣告：
+<font color=#f4f6f7></p>
+
+<p>private:<br>
+    double m<em>real;<br>
+    double m</em>imaginary;  </p></li>
+
+
+</font>
+
+
+<li>透過Visual Studio的精靈：在類別檢視中對Complex類別點擊右鍵，選擇&quot;加入&gt;加入變數&quot;，在存取欄位選擇private，變數型別選出可以存放座標的型態，變數名稱打進剛剛取的名字。<br>
+<img src="img/L11-1-P4.png" alt="FIG4" width="478" height="361"><br>
+這時應該可以從類別檢視看到這個成員變數，而且會發現有個鎖頭的圖示在前面，知道他是什麼意思嗎？（如果沒有看到鎖頭表示你做錯了）<br></li>
+</ol>
+
+<h2 id="toc_6">步驟五</h2>
+
+<p>因為類別外面的程式沒辦法直接存取剛才製作的兩個資料成員，為了要有能夠設定Complex物件內容的介面函式，所以我們為這個類別加入一個setValue(double,double)的public函式，這樣就可以初始化物件的內容了。<br>
+增加一個成員函式也有兩個方法，可以自己在Complex.h跟Complex.cpp加入函式定義，或是用類別檢視加入函式，參考下圖填入必要的內容，注意到底下的其他選項都先不要勾選，按確定完成類別定義。<br>
+<img src="img/L11-1-P5.png" alt="FIG5" width="441" height="518"><br>
+至於函式要做的事情就是：</p>
+
+<div><pre><code class="language-none">
+    m_real = real;
+    m_imaginary = imaginary;</code></pre></div>
+
+<p>在main裡面我們會這樣呼叫：  </p>
+
+<div><pre><code class="language-none">
+    Complex x;
+    x.setValue(1.2,3.4);  //1.2 + 3.4i</code></pre></div>
+
+<h2 id="toc_7">步驟六</h2>
+
+<p>再來我們要定義+,-,*,/的四種運算了：<br>
+首先我們要決定運算的函數名稱、決定需要傳入的參數、回傳的型態、函數應該是private或是public：<br></p>
+<ul>
+  <li>我們用 add, subtract, multiply, divide 作為運算的名稱 </li>
+  <li>由於這四個運算都需要兩個運算元參與(例如: a + b)，每一個成員函式被呼叫時基本上是表示有第二個複數要和自己這個複數來運算，例如:
+<div><pre><code class="language-none">
+    Complex x, y;  
+    ...  
+    x.add(y); // 代表希望把  y 加在 x 這個物件上</code></pre></div>
+</li>
+
+<li>因此每一個運算應該都需要傳入另外一個 Complex 類別的物件(或是物件指標或是參考)作為參數，這樣才能計算自己這個複數和傳入的複數的和、差、乘積、以及商，並把運算的結果存放在自己這個物件裡</li>
+<li>這四個運算中除了除法外只會更改自己這個物件的資料, 不需要傳回任何數值, 除法則可能因為除數是 0 而失敗, 所以我們選擇傳回一 bool 型態的結果來表示成功或是失敗 (等學到例外 exception 的機制以後就會有更容易的方法來處理這種狀況)</li>
+<li>最後，這幾個運算都是提供給 Complex 模組以外的程式裡用來操作 Complex 類別物件的方法，所以應該是 public 的</li>
+</ul>
+
+<p>參考步驟五的方法把四個函式的空殼定義出來。<br>
+我們在開始寫函式之前，應該先在main()函式裡面運用assert()函式先增加<font color="red">單元測試(Unit Test)</font>的程式碼，例如除法應該要執行如下的測試：  </p>
+
+<div><pre><code class="language-none">
+    Complex x1,x2,x3;
+    x1.setValue(7,3);
+    x2.setValue(1,1);
+    x3.setValue(5,-2);                  // (7+3i)/(1+i) = (5-2i)
+    assert(x1.divide(x2));
+    assert(x1.equal(x3 ,1e-10));        // 1e-10表示 1x10<sup>-10</sup>
+    x2.setValue(0,0);
+    assert(!x1.divide(x2));</code></pre></div>
+
+<p>其他的加、減、乘法也應該要設計出對應的單元測試，這樣修改程式的時候（更換演算法或是資料型態更換），才能保證功能是正確的。請依序完成add, subtract, multiply, divide的函式功能。  </p>
+
+<font color="blue"><p><a href="ComplexError.html">你可能會犯的錯誤</a></p></font>
+
+<h2 id="toc_8">步驟七</h2>
+
+<p>再來我們要完成equal（相等）的成員函式了，函式比對傳入的Complex物件是不是和自己這個物件有相同的實數和虛數部分，函式會傳回bool型態來告訴你比對的結果。  </p>
+
+<p>看起來似乎很容易，但是可能會遭遇問題，主要是因為double跟float這類的浮點數不太適合用 == 來精確的比對，浮點數在進行運算跟表達數字的時候是有誤差的，<br>
+（簡單的說：二進位跟十進位互相轉換時總是會有誤差，何況double可以支援顯示最大10<sup>308</sup>的數值，你覺得當double記錄的數字大到一個程度之後數字的可靠度有多少？）<br>
+你在使用==運算子的時候，程式是把每一個位元拿來比對，全部相等才是true，否則是false。所以要比對到每一個位元都相等好像意義不大。請看下面的程式碼：  </p>
+
+<div><pre><code class="language-none">
+    double x = 3.1, y = 0.03;
+    if(x+y == 3.13)
+        cout &lt;&lt; &quot;x+y == 3.13\n&quot;;</code></pre></div>
+
+<p>你可以在你的電腦上看到&quot;x+y==3.13&quot;嗎？<br>
+再看一個例子  </p>
+
+<div><pre><code class="language-none">
+    double x = 3.09;
+    x = x/2.0 + 1.51;
+    if(x==3.055)
+        cout &lt;&lt; &quot;x == 3.055\n&quot;;</code></pre></div>
+
+<p>你覺得螢幕上會印出任何東西嗎？如果沒有的話，為什麼？你可以試試把x的值印出來，看起來好像又是對的，但怎麼會沒有印出東西呢？這就是浮點數表示法造成的問題了:)  </p>
+
+<p>在我們的程式中，你可以用subtract()跟magnitude()來檢查&quot;你的答案&quot; 和 &quot;你預期的答案&quot;的差異值是不是小於一個很小的誤差值，例如1e-7（就是0.0000001）。<br>
+所以你的equal()函式應該要接受兩個參數，第一個參數是要比較的數字，第二個參數是可容忍的誤差值。  </p>
+
+<h2 id="toc_9">步驟八</h2>
+
+<p>現在可以完成計算複數大小的成員函式了，取名叫magnitude吧，函式應該要回傳一個double的結果<br>
+計算開根號時可能會用到sqrt()函式，記得#incldue&lt;cmath&gt;  </p>
+
+<h2 id="toc_10">步驟九</h2>
+
+<p>我們為了能夠在螢幕上顯示一個Complex物件的內容，需要為這個類別加上一個print()的public成員函式，只要呼叫print()就可以印出a+bi的資料。<br>
+那我們怎麼不寫一個getReal(), getImaginary()去讓main()直接使用？像這樣</p>
+
+<div><pre><code class="language-none">
+    Complex x;
+    x.setValue(2,4);
+    cout &lt;&lt; x.getReal() &lt;&lt; &quot;+&quot; &lt;&lt; x.getImaginary() &lt;&lt; &quot;i\n&quot;;</code></pre></div>
+
+<p>理由是我們在設計物件化的程式時，必須盡可能 <strong>&quot;維護類別的封裝&quot;</strong> ，寫一個get Function是一個偷懶的設計，而且透過get Function你可以讓其他的類別取得class中private的內容，這樣子還可以做很多事情，雖然你的類別成員是private，但是就封裝的角度來說還是比較失敗的。這部分牽涉到比較多OOP的設計理念，所以就此打住。<br>
+我們在這裡不額外要求印出來的格式要多整齊（例如接受3+ -2i、2+0i這樣的輸出），只要可以判讀這個Complex的數值就好。  </p>
+
+<h2 id="toc_11">步驟十</h2>
+
+<p>最後我們在main()裡面寫一個比較實際的應用，由鍵盤輸入一個二元一次方程式 ax<sup>2</sup> + bx + c = 0 的實數係數a,b,c，並且利用公式解<br><br>
+<img src="img/L11-1-P6.gif" alt="FIG6">     
+<img src="img/L11-1-P7.gif" alt="FIG7">  </p>
+
+<p>求得x的兩個根，並列印出來。接著計算
+(x<sub>1</sub><sup>5</sup> + x<sub>2</sub><sup>5</sup>) / (x<sub>2</sub><sup>10</sup> + x<sub>2</sub><sup>7</sup>)<br>
+求出它的大小並印在螢幕上。  </p>
+
+<p>請<font color="blue"><a href="https://github.com/GarRuru/CPPintro/releases/download/1.1/ComplexRoot.exe">下載</a></font>並執行範例程式。</p>
+
+<h2 id="toc_12">步驟十一</h2>
+
+<p>最後請助教檢查之後，將完成的專案壓縮（請參考繳交規範），上傳至Tronclass中的Lab11-1繳交區。</p>
+<br><br>
+<p>Reference: <a href="http://squall.cs.ntou.edu.tw/cpp/104spring/lab03/Lab3-1.html">丁培毅-C++物件導向程式設計實習</a></p>
+
+
+
+<br>
+
+<!-- Footer -->
+<footer class="w3-container w3-theme-dark w3-padding-16">
+  <p>2019 Spring, Introduction to Programming</p>
+  <p>Website made by <a href="https://www.facebook.com/nick.chen.14811" target="_blank">Yu-Hsuan Chen</a></p>
+  <p>Powered by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank">w3.css</a></p>
+  <div style="position:relative;bottom:55px;" class="w3-tooltip w3-right">
+    <span class="w3-text w3-theme-light w3-padding">Go To Top</span>    
+    <a class="w3-text-white" href="#myHeader"><span class="w3-xlarge">
+    <i class="fa fa-chevron-circle-up"></i></span></a>
+  </div>
+</footer>
+
+<!-- Script for Sidebar, Tabs, Accordions, Progress bars and slideshows -->
+<script>
+function w3_open() {
+  window.location = 'home.html';
+}
+
+// Tabs
+function openCity(evt, cityName) {
+  var i;
+  var x = document.getElementsByClassName("city");
+  for (i = 0; i < x.length; i++) {
+    x[i].style.display = "none";
+  }
+  var activebtn = document.getElementsByClassName("testbtn");
+  for (i = 0; i < x.length; i++) {
+    activebtn[i].className = activebtn[i].className.replace(" w3-dark-grey", "");
+  }
+  document.getElementById(cityName).style.display = "block";
+  evt.currentTarget.className += " w3-dark-grey";
+}
+
+var mybtn = document.getElementsByClassName("testbtn")[0];
+mybtn.click();
+
+
+function showDivs(n) {
+  var x = document.getElementsByClassName("mySlides");
+  if (n > x.length) {slideIndex = 1}    
+  if (n < 1) {slideIndex = x.length} ;
+  for (i = 0; i < x.length; i++) {
+    x[i].style.display = "none";  
+  }
+  x[slideIndex-1].style.display = "block";  
+}
+
+showDivs(1);
+
+</script>
+
+</body>
+</html>

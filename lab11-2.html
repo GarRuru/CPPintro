@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<title>Lab 11-2</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="https://fonts.googleapis.com/css?family=Noto+Sans+TC:400,700|Ubuntu+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-black.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css">
+<style>
+    p
+    {
+      font-size: 17px;
+    }
+    body
+    {
+      font-family: 'Noto Sans TC', sans-serif;
+      font-family: 'Ubuntu Mono', monospace;
+    }
+
+  </style>
+  
+
+
+<body>
+
+
+<!-- Header -->
+<header class="w3-container w3-theme w3-padding" id="myHeader">
+  <i onclick="w3_open()" class="fa fa-bars w3-xlarge w3-button w3-theme"></i> 
+  <div class="w3-center">
+  <h4>Lab 11-2</h4>
+  <h1 class="w3-xxxlarge w3-animate-bottom">Process an array of complex numbers</h1>
+  </div>
+</header>
+
+
+
+
+<!-- COLORS
+<div class="w3-row">
+  <div class="w3-col w3-container m2 w3-red"><p>Red</p></div>
+  <div class="w3-col w3-container m2 w3-blue"><p>Blue</p></div>
+  <div class="w3-col w3-container m2 w3-blue-grey"><p>Blue Grey</p></div>
+  <div class="w3-col w3-container m2 w3-teal"><p>Teal</p></div>
+  <div class="w3-col w3-container m2 w3-yellow"><p>Yellow</p></div>
+  <div class="w3-col w3-container m2 w3-orange"><p>Orange</p></div>
+</div>
+-->
+
+<div class="w3-row w3-border">
+
+    <h3 id="toc_1">實習目標</h3>
+    
+    <ul>
+    <li>使用vector記錄讀入的物件</li>
+    <li>使用iterator 存取容器物件內的資料物件</li>
+    <li>使用sort來排序容器中的資料物件</li>
+    </ul>
+    
+    <h2 id="toc_2">步驟一</h2>
+    
+    <p>請產生另一個專案，並且從Lab11-1中拷貝Complex.h 跟Complex.cpp，並加到這個專案。  </p>
+    
+    <h2 id="toc_3">步驟二</h2>
+    
+    <p>請下載<a href="resources/testComplex.cpp">testComplex.cpp</a>，並把它加進專案中，檔案中已經完成了開啟檔案的動作，請依照下面的說明把剩餘的步驟完成。  </p>
+    
+    <p>readFile()函式會打開Complex.dat從檔案讀取多筆複數。<br>
+    <font color="blue"><a href="resources/Complex.dat">Complex.dat</a></font>檔案內容如下  </p>
+    
+    <div><pre><code class="language-none">
+      2 3.2
+      4.1 5
+      0.006 0.007
+      ...</code></pre></div>
+    
+    <p>每一列代表一個複數，請把讀到的兩個參數放進Complex類別的物件中，並且塞進vector裡面。  </p>
+    
+    <h2 id="toc_4">步驟三</h2>
+    
+    <p>在 main() 中 請使用 vector&lt;...&gt;::iterator 將所有的複數資料全部乘起來，並且將結果列印出來<br>
+    下面的範例是使用 vector 物件的 iterator 巡訪整個vector的例子  </p>
+    
+    <div><pre><code class="language-none">
+      vector&lt;Complex&gt; vc;
+      ...
+      vector&lt;Complex&gt;::iterator iter;
+      for(iter = vc.begin(); iter&lt;vc.end();iter++)
+          cout &lt;&lt; iter-&gt;print();</code></pre></div>
+      
+    <p>iterator 使用起來像是一個指標, 可以用 ++, &lt;, &gt;, =, *, -&gt; 等等運算去移動, 擷取資料, 你可以抽象地把它想像成是指標, 目前內部實作也是指標, 但是請不要去把它真的轉型為指標  </p>
+    
+    <div><pre><code class="language-none">  DataRecord *ptr = (DataRecord *)iter; // 錯誤</code></pre></div>
+    
+    <p>compiler 廠商並不保證它的實作一定是指標。  </p>
+    
+    <p>如果想複習iterator大概在講什麼，可以去看<a href="https://tronclass.ntou.edu.tw/course/48379/learning-activity/full-screen#/110919">實習的投影片</a>  </p>
+    
+    <h2 id="toc_5">步驟四</h2>
+    
+    <p>上一個步驟的結果是 -8.96419 + -3.24387i，請寫一個 assert 敘述來自動確認這個結果。</p>
+    
+    <h2 id="toc_6">步驟五</h2>
+    
+    <p>這一步需要你使用STL的sort()函式排序讀入的vector大小，使用sort需要額外引入&lt;algorithm&gt;。<br>
+    sort函式需要三個參數，分別是排序的第一筆資料、排序的最後一筆資料、比較大小的function。
+    如果sort()排序的東西是基本型態（例如int），那麼第三個引數是可以省略的，但是今天是我們自定義的Complex類別，所以你必須自己定義Complex的大小關係。<br>
+    請撰寫一個比較複數點到原點距離大小的函式 greater() 以供 sort 使用來比較兩個複數的大小, 然後請在 main 函式中呼叫 sort 由小到大排序</p>
+    
+    <p>greater()的函式大概長這個樣子：<br>
+    <font color=#f4f6f7></p>
+    
+    <div><pre><code class="language-none">
+      bool mygreater(const Complex &amp;a, const Complex &amp;b)
+      {
+          return a.magnitude() &lt; b.magnitude()
+      }
+      //如果a要在b之前，mygrater()回傳 true，反之如果b要在a之前，mygreater() 回傳 false</code></pre></div>
+      
+    <p></font></p>
+    
+    <p>main()呼叫則是像這樣子</p>
+    
+    <div><pre><code class="language-none">  sort(vc.begin(),vc.end(),mygreater);    //vc是存放Complex的vector</code></pre></div>
+    
+    <h2 id="toc_7">步驟六</h2>
+    
+    <p>請用陣列的存取方式 (ex. dataContainer[<font color="blue">i</font>].value) 寫一個迴圈依序將所有的複數資料列印出來</p>
+    
+    <h2 id="toc_8">步驟七</h2>
+    
+    <p>最後請助教檢查之後，將完成的專案壓縮（請參考繳交規範），上傳至Tronclass中的Lab11-2繳交區。</p>
+    <br><br>
+    <p>Reference: <a href="http://squall.cs.ntou.edu.tw/cpp/102spring/lab04/Lab4-1.html">丁培毅-C++物件導向程式設計實習</a></p>
+    
+<br>
+
+<!-- Footer -->
+<footer class="w3-container w3-theme-dark w3-padding-16">
+  <p>2019 Spring, Introduction to Programming</p>
+  <p>Website made by <a href="https://www.facebook.com/nick.chen.14811" target="_blank">Yu-Hsuan Chen</a></p>
+  <p>Powered by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank">w3.css</a></p>
+  <div style="position:relative;bottom:55px;" class="w3-tooltip w3-right">
+    <span class="w3-text w3-theme-light w3-padding">Go To Top</span>    
+    <a class="w3-text-white" href="#myHeader"><span class="w3-xlarge">
+    <i class="fa fa-chevron-circle-up"></i></span></a>
+  </div>
+</footer>
+
+<!-- Script for Sidebar, Tabs, Accordions, Progress bars and slideshows -->
+<script>
+function w3_open() {
+  window.location = 'home.html';
+}
+
+// Tabs
+function openCity(evt, cityName) {
+  var i;
+  var x = document.getElementsByClassName("city");
+  for (i = 0; i < x.length; i++) {
+    x[i].style.display = "none";
+  }
+  var activebtn = document.getElementsByClassName("testbtn");
+  for (i = 0; i < x.length; i++) {
+    activebtn[i].className = activebtn[i].className.replace(" w3-dark-grey", "");
+  }
+  document.getElementById(cityName).style.display = "block";
+  evt.currentTarget.className += " w3-dark-grey";
+}
+
+var mybtn = document.getElementsByClassName("testbtn")[0];
+mybtn.click();
+
+
+function showDivs(n) {
+  var x = document.getElementsByClassName("mySlides");
+  if (n > x.length) {slideIndex = 1}    
+  if (n < 1) {slideIndex = x.length} ;
+  for (i = 0; i < x.length; i++) {
+    x[i].style.display = "none";  
+  }
+  x[slideIndex-1].style.display = "block";  
+}
+
+showDivs(1);
+
+</script>
+
+</body>
+</html>
